@@ -1,0 +1,1 @@
+functions in math. will convert input to floats and return the float result

@@ -1,0 +1,15 @@
+hi! here are some escape sequences which may help you along the way :-P
+
+\a alert (bell) char
+\b backspace
+\f formfeed
+\n yk
+\r carriage return
+\t horizontal tab
+\v vertical tab
+\\ backslash
+\? question mark
+\' single qoute
+\" double quote
+\ooo octal num
+\xhh hex num
