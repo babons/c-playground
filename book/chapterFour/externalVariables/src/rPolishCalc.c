@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <math.h>
 
 /*
 Program featuring a reverse Polish calculator.
@@ -24,8 +25,9 @@ double pop(void);
 
 int main()
 {
-	int type;
+	int type, i;
 	double op2;
+	char p;
 	char s[MAXOP];
 
 	while ((type = getop(s)) != EOF) {
@@ -49,6 +51,47 @@ int main()
 				push(pop() / op2);
 			else
 				printf("error: zero div\n");
+			break;
+		case '%':
+			op2 = pop();
+			if (op2 != 0.0)
+				push((int) pop() % (int) op2);
+			else
+				printf("error: no zero\n");
+			break;
+		case '^':
+			op2 = pop();
+			push(pow(pop(), op2));
+			break;
+		case 's':
+			push(sin(pop()));
+			break;
+		case 'c':
+			push(cos(pop()));
+			break;
+		case 'L':
+			printf("%f, %f\n", val[sp - 1], val[sp - 2]);
+			break;
+		case 'D':
+			if (sp > 0)
+				push(val[sp-1]);
+			else
+				printf("error: stack is empty - nothing to duplication\n");
+			break;
+		case 'C':
+			for (i = 0; i < sp; i++) {
+				val[i] = 0;
+			}
+			sp = 0;
+			break;
+		case 'S':
+			if (sp >= 2) {
+				p = val[sp-1];
+				val[sp-1] = val[sp-2];
+				val[sp-2] = p;
+			} else {
+				printf("error: less than two values; can't swap");
+			}
 			break;
 		case '\n':
 			printf("\t%.8g\n", pop());
@@ -81,21 +124,34 @@ double pop(void)
 
 int getop(char s[])
 {
-	int i, c;
+	int i = 0, c, nch;
 
 	while ((s[0] = c = getch()) == ' ' || c == '\t')
 		;
 	s[1] = '\0';
-	if (!isdigit(c) && c != '.')
-		return c;
-	i = 0;
+	if (c == '-') {
+		nch = getch();
+		if (isdigit(nch) || nch == '.') {
+			s[i++] = c;
+			s[i++] = nch;
+			c = nch;
+		} else {
+			ungetch(nch);
+			return c;
+		}
+	} else if (!isdigit(c) && c != '.') {
+        	return c; // not a number
+    	} else {
+	        s[i++] = c;
+    	}
+
 	if (isdigit(c))
 		while (isdigit(s[++i] = c = getch()))
 			;
 	if (c == '.')
 		while (isdigit(s[++i] = c = getch()))
 			;
-	s[i] = '\0';
+	s[i - 1] = '\0';
 	if (c != EOF)
 		ungetch(c);
 	return NUMBER;
