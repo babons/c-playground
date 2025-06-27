@@ -33,7 +33,7 @@ int strlen(char *s)
 	*/
 
 	// textbook way -- did it myself with the first one
-	for (n = 0; *s != '\0', s++)
+	for (n = 0; *s != '\0'; s++)
 		n++;
 	return n;
 }
