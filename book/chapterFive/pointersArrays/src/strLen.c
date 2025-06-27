@@ -20,8 +20,9 @@ int main()
 
 int strlen(char *s)
 {
-	int i = 0;
+	int i=0, n;
 
+	/*
 	for (;;) {
 		if (*(s+i) != '\0') {
 			i++;
@@ -29,4 +30,10 @@ int strlen(char *s)
 			return i;
 		}
 	}
+	*/
+
+	// textbook way -- did it myself with the first one
+	for (n = 0; *s != '\0', s++)
+		n++;
+	return n;
 }
