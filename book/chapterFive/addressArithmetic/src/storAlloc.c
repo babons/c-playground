@@ -1,6 +1,7 @@
 #include <stdio.h>
-#define ALLOCSIZE 10000
-#define MAXWORD 10000
+#define BUFSIZE 2048
+#define INPUTBUF 256
+
 /*
 Storage allocator. Figuring this out w/o textbook example (little of gpt
 for high level *learning enhancements*).
@@ -9,8 +10,9 @@ This program will utilize storage allocating functions for short string
 input.
 */
 
-static char allocbuf[ALLOCSIZE]; /* storage for allo */
+static char allocbuf[BUFSIZE]; /* storage for allo */
 static char *allocp = allocbuf; /* pointer to the next free position*/ 
+char* alloc(int n);
 void afree(char *p); /* releases storage */
 void inputwords(char *p);
 void printwords(char *p);
@@ -28,13 +30,29 @@ int main()
 		// GPT helped w/ syntax errors
 		switch (input) {
 			case 1:
-				inputwords(allocp);
+				char *r = alloc(INPUTBUF);
+				if (r == NULL) {
+					printf("error: Buffer full. Please clear.\n\n");
+					break;
+				} else {
+					printf("Enter your words: ");
+					inputwords(r);
+					printf("\n");
+				}
 				break;
 			case 2:
-				printf("\nOutput:\n");
-				printwords(allocp);
-				break;
+				if (allocp == allocbuf) {
+					printf("error: Buffer is empty. Please input words.\n\n");
+					break;
+				} else {
+					printf("\nOutput:\n");
+					printwords(allocbuf);
+					break;
+				}
 			case 3:
+				if (allocp == allocbuf) {
+					printf("error: Buffer is empty. Nothing to clear!\n");
+				}
 				afree(allocp);
 				break;
 			case 4:
@@ -47,6 +65,20 @@ int main()
 	}
 	return 0;
 }
+
+// Allocates n bytes for input and returns a pointer at the start of this block
+
+char* alloc(int n)
+{
+	if (allocbuf + BUFSIZE - allocp >= n) {
+		char *start = allocp;
+		allocp += n;
+		return start;
+	} else {
+		return NULL;
+	}
+}
+
 // Clears the buffer
 void afree(char *p)
 {
@@ -65,31 +97,26 @@ void afree(char *p)
 // Prints words collected and stored in the buffer
 void printwords(char *p)
 {
-	int inputcount = 1;
-	*(p-1) = '\0';
-	p = allocbuf;
+	// re-writing this bc fixing it after alloc addition is pissing me off
+	char *b = p;
+	int entrycount = 1;
+	while (b < allocp) {
+		if (*b == '\0') break; // no additional entries
 
-	if (*p == '\0') {
-		printf("Buffer empty. Please enter some words with option 1.\n\n");
-		return;
-	}
+		printf("%d: ", entrycount++);
 
-
-	printf("%d: ", inputcount);
-	while (*p != '\0') {
-		if (*p == '#') {
-			printf("\n");
-			inputcount++;
-			printf("%d: ", inputcount);
-		} else if (*p == '|') {
-			printf(" ");
-		} else {
-			printf("%c", *p);
+		for (char *c = b; *c != '\0' && c < b + INPUTBUF; c++) {
+			if (*c == '|') {
+				printf(" ");
+			} else
+				printf("%c", *c);
 		}
-		p++;
+
+		printf("\n");
+		b += INPUTBUF;
 	}
-	printf("\n\n");
-	return;
+
+	printf("\n");
 }
 
 // Collects input and stores the words into the buffer. End of the input is marked by '|'
@@ -98,12 +125,12 @@ void inputwords(char *p)
 	char c;
 	while (getchar() != '\n');
 
-        printf("Enter three words: ");
         while((c = getchar()) != '\n') {
-		if (p - allocbuf >= ALLOCSIZE - 1) {
-			printf("Buffer full. Please clear!\n");
-			break;
-                } else if (c == ' ') {
+		if (p == (allocp - 1)) {
+			printf("\nerror: buffer filled at: %c.\n", *(p-1));
+			*(p-1) = '#';
+			return;
+		} else if (c == ' ') {
                         *p = '|';
                         p++;
                 } else {
@@ -111,9 +138,5 @@ void inputwords(char *p)
                         p++;
                 }
         }
-	*p = '#';
-	p++;
-	*p = '\0'; // will be overwritten if needed
-	allocp = p;
 	return;
 }
