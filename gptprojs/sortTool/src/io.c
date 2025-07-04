@@ -4,19 +4,20 @@
 #include <stdlib.h>
 
 #define BUFSIZE 4096
-#define MAXLEN 16
+#define MAXLEN 64
 
 static char allocbuf[BUFSIZE];
 static char *allocp = allocbuf;
 char *alloc(int n);
 
-int readlines(char *lineptr[], int maxlines) {
+int readlines(char *lineptr[], int maxlines, int nlines) {
 	int i = 0; // line counter
 	char string[MAXLEN]; // temp array for string input -- overwritten by each my_getline
-	while (i != maxlines && my_getline(string, MAXLEN) > 0) {
+	while (i != maxlines && (my_getline(string, MAXLEN) != 0)) {
 		char *buffp = alloc(strlen(string) + 1); // alloc room for each line
 		strcpy(buffp, string); // copy contents of string into the buffer
-		lineptr[i++] = buffp; // copy string in the allocated space into our pointer array
+		lineptr[i + nlines] = buffp; // copy string in the allocated space into our pointer array
+		i++;
 	}
 	return i;
 }
@@ -35,17 +36,15 @@ int my_getline(char *s, int lim)
 	int i = 0;
 	int c;
 	char temp[lim];
-	while ((c = getchar()) && c != '\n' && i < lim) {
-		temp[i++] = c;
-	}
-	if (i < lim) {
-		strcpy(s, temp);
-		return i;
-	} else {
-		printf("Line too large. Please try again");
-		return -1;
+	while ((c = getchar()) && c != EOF && c != '\n' && c != '#' && i < lim) {
+		s[i++] = c;
 	}
 
+	if (c == '#') {
+		return 0;
+	}
+	//strcpy(s, temp);
+	s[i++] = '\0';
 	return i;
 }
 
