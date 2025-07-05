@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "io.h"
+#include "sort.h"
 
 #define MAXLINES 5000
 
@@ -32,7 +33,19 @@ int main() {
 			printf("\nYou entered:\n");
 			writelines(lineptr, nlines);
 		} else if (opt == 3) {
-			printf("WIP\n");
+			printf("Please select an option below: \n");
+			printf("1 - Length Sorting\n2 - Alphabetical Sorting\n");
+			scanf("%i", &opt);
+			while (getchar() != '\n' && getchar() != EOF);
+			if (nlines <= 0) {
+				printf("No lines.\n");
+			} else if (opt == 1) {
+				lsort(lineptr, nlines);
+				printf("Sorted!\n");
+			} else if (opt == 2) {
+				asort(lineptr, nlines);
+				printf("Sorted!\n");
+			}
 		} else if (opt == 4) {
 			printf("Bye!!!\n");
 			return 0;
