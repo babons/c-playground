@@ -48,17 +48,9 @@ int my_getline(char *s, int lim)
 {
         int i = 0;
         int c;
-
-        while ((c = getchar()) && c != EOF && i < lim) {
-                if (c == '\n') {
-			s[i++] = c;
-			break;
-		}
-		s[i++] = c;
+        while ((c = getchar()) && c != EOF && c != '\n' && c != '#' && i < lim) {
+                s[i++] = c;
         }
-
-	s[i] = '\0';
-	return i;
 
         s[i] = '\0';
         return i;
