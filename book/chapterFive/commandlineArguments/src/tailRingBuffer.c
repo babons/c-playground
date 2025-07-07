@@ -30,23 +30,22 @@ char *alloc(int n)
 char *my_getline(int n)
 {
 	int c, i = 0;
-//	char *r = alloc(n);
-//	if (r == NULL ) {
-//		return NULL;
-//	}
-	char temp[n];
+	char *r = alloc(n);
+	if (r == NULL ) {
+		return NULL;
+	}
+
 	while (--n > 1 && (c = getchar()) != EOF && c != '\n') {
-		temp[i++] = c;
+		r[i++] = c;
 	}
 
 	if (c == EOF && i == 0) {
 		return NULL;
 	} else if (c == '\n') {
-		temp[i++] = c;
+		r[i++] = c;
 	}
-	temp[i] = '\0';
+	r[i] = '\0';
 //	printf("%s\n", r);
-	char *r = temp;
 	return r;
 
 }
