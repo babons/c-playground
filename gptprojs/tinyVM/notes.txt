@@ -1,0 +1,38 @@
+system
+
+state
+interpreter
+instruction set
+program data
+i/o layer
+
+state
+program counter - which instruction
+accumulator - current value
+running flag - stop/go
+
+interpreter
+loop which fetches the next intruction
+
+instruction set
+what can the vm do
+
+program data
+static array in memory
+
+i/o
+printf :)
+
+
+instruction set
+read/write to mem
+conditional jumps
+ability to loop
+will start with loading, adding, printing, and halting
+can add jmp and jz later for control flow
+
+
+flow
+get input -> translate "what is this" -> run it
+
+programs will just be static arrays w/ operations and operands
