@@ -1,0 +1,2 @@
+add arg input to select program to run
+add arg input to use an interactive asm env
