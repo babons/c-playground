@@ -1,16 +1,10 @@
 #include <stdio.h>
 #include "operations.h"
+#include "opcodes.h"
 
 /*
 High-level prototype for this project.
 */
-
-enum {
-	HALT,
-	LOAD,
-	ADD,
-	PRINT
-};
 
 int state = 1;
 int acc = 0;
