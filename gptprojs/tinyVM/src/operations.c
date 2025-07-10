@@ -17,6 +17,11 @@ void add(int n)
 	acc += n;
 }
 
+void sub(int n)
+{
+	acc -= n;
+}
+
 void print(int n)
 {
 	printf("%d\n", acc);
