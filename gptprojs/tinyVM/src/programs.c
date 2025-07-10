@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "operations.h"
+#include "opcodes.h"
 
 int programOne[][2] = {
 	{LOAD, 6},

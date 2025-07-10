@@ -1,7 +1,7 @@
 #ifndef OPCODES_H
 #define OPCODES_H
 
-enum {
+enum opcodes {
         HALT,
         LOAD,
         ADD,
@@ -9,4 +9,4 @@ enum {
         PRINT
 };
 
-#endif endif
+#endif
