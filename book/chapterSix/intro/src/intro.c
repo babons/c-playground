@@ -9,6 +9,7 @@ struct point {
 };
 
 struct point make_point(int x, int y);
+void move_by_value(struct point *p, int dx, int dy);
 
 int main()
 {
@@ -28,6 +29,11 @@ int main()
 
 	//!! struct functions
 	struct point a = make_point(2, 5);
+	printf("%d, %d\n", a.x, a.y); // 2, 5
+
+	//!! passing a struct into a function
+	struct point *pa = &a;
+	move_by_value(pa, 5, 2);
 	printf("%d, %d\n", a.x, a.y);
 }
 
@@ -37,4 +43,10 @@ struct point make_point(int x, int y)
 	p.x = x;
 	p.y = y;
 	return p;
+}
+
+void move_by_value(struct point *p, int dx, int dy)
+{
+	p->x += dx;
+	p->y += dy;
 }
