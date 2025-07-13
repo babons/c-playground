@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 /*
-Demo structures and stuff
+Demo structures and stuff. Level 1 of GPT's ringer
 */
 
 struct point {
