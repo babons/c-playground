@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#define NPOINTS (sizeof points / sizeof(struct point))
 struct point {
 	int x,y;
 } points[] = {
@@ -10,10 +10,27 @@ struct point {
 	9,10
 };
 
-int pointsize = sizeof(struct point);
-int arraysize = sizeof points;
+void shiftpoints(struct point points[], int n, int dx, int dy)
+{
+	points[n].x += dx;
+	points[n].y += dy;
+}
+
+void printpoints()
+{
+        for (int i = 0; i < NPOINTS; i++) {
+                printf("%d, %d\n", points[i].x, points[i].y);
+        }
+	printf("\n");
+}
 
 int main()
 {
+	printpoints();
+
+	// Manip struct array
+	shiftpoints(points, 0, 10, 10);
+	printpoints();
+
 	return 0;
 }
