@@ -38,6 +38,17 @@ void incwordcount(struct key keys[], int n, char *target)
 	}
 }
 
+int wordlookup(struct key keys[], int n, char *target)
+{
+	for (int i = 0; i < n; i++) {
+		if (keys[i].word == target) {
+			return keys[i].count;
+		}
+	}
+
+	return -1;
+}
+
 void printpoints()
 {
         for (int i = 0; i < NPOINTS; i++) {
@@ -62,9 +73,12 @@ int main()
 	shiftpoints(points, 0, 10, 10);
 	printpoints();
 
-	// String array / String array manip
+	// String struct array / String struct array manip
 	printcounts();
 	incwordcount(keys, NKEYS, "clear");
 	printcounts();
+
+	// String struct array lookup
+	printf("Count for clear: %d\n", wordlookup(keys, NKEYS, "clear"));
 	return 0;
 }
